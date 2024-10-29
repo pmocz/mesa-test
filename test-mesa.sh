@@ -8,18 +8,18 @@ set -euxo pipefail
 #SBATCH --mail-type=FAIL
 #SBATCH --requeue
 
-# set MESA SDK version
-export MESASDK_VERSION=20.3.1
-module load mesasdk/${MESASDK_VERSION}
+# load the MESA sdk
+./load_mesasdk.sh
+
 
 # set email address for SLURM and for cleanup output
-export MY_EMAIL_ADDRESS=jwschwab@ucsc.edu
+export MY_EMAIL_ADDRESS=pmocz@flatironinstitute.org
 
 # set SLURM options (used for all sbatch calls)
-export MY_SLURM_OPTIONS="--partition=windfall --account=windfall"
+export MY_SLURM_OPTIONS="--partition=gen"
 
 # set how many threads; this will also be sent to SLURM as --ntasks-per-node
-export OMP_NUM_THREADS=36
+export OMP_NUM_THREADS=16
 
 
 # set other relevant MESA options
@@ -29,9 +29,9 @@ export MESA_GIT_LFS_SLEEP=30
 export MESA_FORCE_PGSTAR_FLAG=false
 
 # set paths for OP opacities
-export MESA_OP_MONO_DATA_PATH=${DATA_DIR}/OP4STARS_1.3/mono
-export MESA_OP_MONO_DATA_CACHE_FILENAME=${DATA_DIR}/OP4STARS_1.3/mono/op_mono_cache.bin
-rm -f ${MESA_OP_MONO_DATA_CACHE_FILENAME}
+#export MESA_OP_MONO_DATA_PATH=${DATA_DIR}/OP4STARS_1.3/mono
+#export MESA_OP_MONO_DATA_CACHE_FILENAME=${DATA_DIR}/OP4STARS_1.3/mono/op_mono_cache.bin
+#rm -f ${MESA_OP_MONO_DATA_CACHE_FILENAME}
 
 # set non-default cache directory (will be cleaned up on each run)
 #export MESA_CACHES_DIR=/tmp/mesa-cache
@@ -49,9 +49,9 @@ case "${USE_MESA_TEST}" in
     # test with mesa_test
     t)
 
-	mesa_test install jws/energy-eqn-cleanup
+	##XXXmesa_test install chore/pmocz/format
 	mesa_test submit --empty
-	export MESA_WORK=/data/groups/ramirez-ruiz/jwschwab/.mesa_test/work
+	export MESA_WORK=/mnt/home/pmocz/.mesa_test/work
 
 	if ! grep "MESA installation was successful" "${MESA_WORK}/build.log"; then
 	    echo "MESA installation failed"
@@ -86,13 +86,13 @@ cd ${MESA_WORK}/star/test_suite
 export NTESTS=$(./count_tests)
 cd -
 
-export STAR_JOBID=$(sbatch --parsable \
-                           --ntasks-per-node=${OMP_NUM_THREADS} \
-                           --array=1-${NTESTS} \
-                           --output="${MESA_WORK}/star.log-%a" \
-                           --mail-user=${MY_EMAIL_ADDRESS} \
-                           ${MY_SLURM_OPTIONS} \
-                           star.sh)
+#export STAR_JOBID=$(sbatch --parsable \
+#                           --ntasks-per-node=${OMP_NUM_THREADS} \
+#                           --array=1-${NTESTS} \
+#                           --output="${MESA_WORK}/star.log-%a" \
+#                           --mail-user=${MY_EMAIL_ADDRESS} \
+#                           ${MY_SLURM_OPTIONS} \
+#                           star.sh)
 
 
 # run the binary test suite
@@ -116,18 +116,18 @@ cd ${MESA_WORK}/astero/test_suite
 export NTESTS=$(./count_tests)
 cd -
 
-export ASTERO_JOBID=$(sbatch --parsable \
-                             --ntasks-per-node=${OMP_NUM_THREADS} \
-                             --array=1-${NTESTS} \
-                             --output="${MESA_WORK}/astero.log-%a" \
-                             --mail-user=${MY_EMAIL_ADDRESS} \
-                             ${MY_SLURM_OPTIONS} \
-                             astero.sh)
+#export ASTERO_JOBID=$(sbatch --parsable \
+#                             --ntasks-per-node=${OMP_NUM_THREADS} \
+#                             --array=1-${NTESTS} \
+#                             --output="${MESA_WORK}/astero.log-%a" \
+#                             --mail-user=${MY_EMAIL_ADDRESS} \
+#                             ${MY_SLURM_OPTIONS} \
+#                             astero.sh)
 
 
 # send the email
-sbatch --output="${MESA_WORK}/cleanup.log" \
-       --dependency=afterany:${STAR_JOBID},afterany:${BINARY_JOBID},afterany:${ASTERO_JOBID} \
-       ${MY_SLURM_OPTIONS} \
-       cleanup.sh
+#sbatch --output="${MESA_WORK}/cleanup.log" \
+#       --dependency=afterany:${STAR_JOBID},afterany:${BINARY_JOBID},afterany:${ASTERO_JOBID} \
+#       ${MY_SLURM_OPTIONS} \
+#       cleanup.sh
 

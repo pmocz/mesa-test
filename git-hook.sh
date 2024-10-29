@@ -5,7 +5,7 @@ set -euxo pipefail
 update_mesa() {
 
     # relevant directories
-    MESA_GIT_DIR=/data/users/jwschwab/mesa.git
+    MESA_GIT_DIR=/mnt/home/pmocz/Projects/Mesa/mesa
     MESA_TEST_DIR=/data/groups/ramirez-ruiz/jwschwab/mesa-git-test
 
     # clean up and checkout pushed branch
@@ -15,7 +15,7 @@ update_mesa() {
 
     # now spawn a test job
     (
-        cd /home/jwschwab/mesa-test
+        cd /mnt/home/pmocz/Projects/Mesa/mesa-test
         ./test-mesa.sh git run
     )
 

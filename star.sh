@@ -7,10 +7,10 @@
 #SBATCH --mail-type=FAIL
 #SBATCH --requeue
 
-module load mesasdk/${MESASDK_VERSION}
+./load_mesasdk.sh
 clean_caches
 
-echo "star ${SLURM_ARRAY_TASK_ID} $(hostname)" >> /home/jwschwab/fail.log
+echo "star ${SLURM_ARRAY_TASK_ID} $(hostname)" >> /mnt/home/pmocz/fail.log
 
 if [ -n "${USE_MESA_TEST}" ]; then
     mesa_test test ${SLURM_ARRAY_TASK_ID} --module=star ${MESA_TEST_OPTIONS}

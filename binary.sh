@@ -7,7 +7,7 @@
 #SBATCH --mail-type=FAIL
 #SBATCH --requeue
 
-module load mesasdk/${MESASDK_VERSION}
+./load_mesasdk.sh
 clean_caches
 
 if [ -n "${USE_MESA_TEST}" ]; then
