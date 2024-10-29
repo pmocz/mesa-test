@@ -49,7 +49,7 @@ case "${USE_MESA_TEST}" in
     # test with mesa_test
     t)
 
-	##XXXmesa_test install chore/pmocz/format
+	mesa_test install # chore/pmocz/format
 	mesa_test submit --empty
 	export MESA_WORK=/mnt/home/pmocz/.mesa_test/work
 
@@ -86,13 +86,13 @@ cd ${MESA_WORK}/star/test_suite
 export NTESTS=$(./count_tests)
 cd -
 
-#export STAR_JOBID=$(sbatch --parsable \
-#                           --ntasks-per-node=${OMP_NUM_THREADS} \
-#                           --array=1-${NTESTS} \
-#                           --output="${MESA_WORK}/star.log-%a" \
-#                           --mail-user=${MY_EMAIL_ADDRESS} \
-#                           ${MY_SLURM_OPTIONS} \
-#                           star.sh)
+export STAR_JOBID=$(sbatch --parsable \
+                           --ntasks-per-node=${OMP_NUM_THREADS} \
+                           --array=1-${NTESTS} \
+                           --output="${MESA_WORK}/star.log-%a" \
+                           --mail-user=${MY_EMAIL_ADDRESS} \
+                           ${MY_SLURM_OPTIONS} \
+                           star.sh)
 
 
 # run the binary test suite
@@ -116,18 +116,18 @@ cd ${MESA_WORK}/astero/test_suite
 export NTESTS=$(./count_tests)
 cd -
 
-#export ASTERO_JOBID=$(sbatch --parsable \
-#                             --ntasks-per-node=${OMP_NUM_THREADS} \
-#                             --array=1-${NTESTS} \
-#                             --output="${MESA_WORK}/astero.log-%a" \
-#                             --mail-user=${MY_EMAIL_ADDRESS} \
-#                             ${MY_SLURM_OPTIONS} \
-#                             astero.sh)
+export ASTERO_JOBID=$(sbatch --parsable \
+                             --ntasks-per-node=${OMP_NUM_THREADS} \
+                             --array=1-${NTESTS} \
+                             --output="${MESA_WORK}/astero.log-%a" \
+                             --mail-user=${MY_EMAIL_ADDRESS} \
+                             ${MY_SLURM_OPTIONS} \
+                             astero.sh)
 
 
 # send the email
-#sbatch --output="${MESA_WORK}/cleanup.log" \
-#       --dependency=afterany:${STAR_JOBID},afterany:${BINARY_JOBID},afterany:${ASTERO_JOBID} \
-#       ${MY_SLURM_OPTIONS} \
-#       cleanup.sh
+sbatch --output="${MESA_WORK}/cleanup.log" \
+       --dependency=afterany:${STAR_JOBID},afterany:${BINARY_JOBID},afterany:${ASTERO_JOBID} \
+       ${MY_SLURM_OPTIONS} \
+       cleanup.sh
 

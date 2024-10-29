@@ -4,33 +4,15 @@ Josiah Schwab,
 Philip Mocz
 (2024)
 
-SLURM scripts for running the MESA test_suite.
+SLURM scripts for running the MESA test_suite on rusty.
 
-These scripts submit a set of jobs that run the [[http://mesastar.org][MESA]] 
-test_suite on a cluster.
+These scripts submit a set of jobs that run the [[http://mesastar.org][MESA]] test_suite on a cluster.
 It is written for the [[https://slurm.schedmd.com/documentation.html][SLURM]] job scheduler.
 Nifty features include managing the dependencies between the jobs, running the star
 test_suite in parallel, and sending an email with the results.
 
-The scripts load the [[http://user.astro.wisc.edu/~townsend/static.php?ref=mesasdk][MESA SDK]] via [[http://modules.sourceforge.net/][modules]].
-(You could also modify them to directly set the environment variables yourself.) 
-The module file I use is
-
-```
-  #%Module1.0
-  proc ModulesHelp { } {
-         Puts Stderr "This module adds MESA SDK 24.06.1 to various paths"
-  }
-
-  module-whatis "Sets up MESA SDK 24.06.1 in your environment"
-
-  set HOME $env(HOME)
-  set MESASDK_ROOT $HOME/modules/mesasdk-24.06.1
-  setenv MESASDK_ROOT $MESASDK_ROOT
-  prepend-path PATH               $MESASDK_ROOT/bin/
-  prepend-path MANPATH            $MESASDK_ROOT/share/man/
-  setenv PGPLOT_DIR $MESASDK_ROOT/lib/pgplot
-```
+The scripts assumes you have a [[http://user.astro.wisc.edu/~townsend/static.php?ref=mesasdk][MESA SDK]] installed,
+as well as [[https://github.com/MESAHub/mesa_test][mesa_test]]
 
 
 ## mesa-test.sh
@@ -40,10 +22,8 @@ fetch the latest MESA version, so on my cluster, that means it needs
 to run on a login node. It exits after checking out a new copy of
 MESA and spawning the other jobs.
 ```console
-./test-mesa.sh [git OR svn]
+./test-mesa.sh
 ```
-The first argument picks whether to run from the svn using [[https://github.com/MESAHub/mesa_test][mesa_test]]
-or from git using the `each_test_run` script included in MESA.
 
 You should edit this script to customize various values for your
 system. Look for comments beginning `# set`.
