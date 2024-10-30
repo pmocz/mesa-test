@@ -5,7 +5,7 @@ set -euxo pipefail
 update_mesa() {
 
     # relevant directories
-    MESA_GIT_DIR=/mnt/home/pmocz/Projects/Mesa/mesa
+    MESA_GIT_DIR=/mnt/home/pmocz/Projects/Mesa/mesa.git
     MESA_TEST_DIR=/data/groups/ramirez-ruiz/jwschwab/mesa-git-test
 
     # clean up and checkout pushed branch

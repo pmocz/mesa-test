@@ -8,7 +8,6 @@
 #SBATCH --requeue
 
 ./load_mesasdk.sh
-clean_caches
 
 if [ -n "${USE_MESA_TEST}" ]; then
     mesa_test test ${SLURM_ARRAY_TASK_ID} --module=binary ${MESA_TEST_OPTIONS}

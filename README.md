@@ -4,7 +4,7 @@ Josiah Schwab,
 Philip Mocz
 (2024)
 
-SLURM scripts for running the MESA test_suite on rusty.
+SLURM scripts for running the MESA test_suite on rusty at Flatiron.
 
 These scripts submit a set of jobs that run the [[http://mesastar.org][MESA]] test_suite on a cluster.
 It is written for the [[https://slurm.schedmd.com/documentation.html][SLURM]] job scheduler.
@@ -28,26 +28,27 @@ MESA and spawning the other jobs.
 You should edit this script to customize various values for your
 system. Look for comments beginning `# set`.
 
-## install.sh
-This installs MESA.
-
 
 ## star.sh
+
 This runs the star test_suite. It uses SLURM job arrays to run a separate job for
 each test case.
 
 
 ## binary.sh
+
 This runs the binary test_suite. It uses SLURM job arrays to run a separate job for
 each test case.
 
 
-## cleanup.sh
-This cleans up and will send an email with the results to
-`MY_EMAIL_ADDRESS`. (Set this variable in `test_mesa.sh` or edit the script.)
+## astero.sh
+
+This runs the astero test_suite. It uses SLURM job arrays to run a separate job for
+each test case.
 
 
 ## git-hook.sh
+
 This is an example post-receive hook that can start the tests when a
 git repo receives a push on a branch. This script will need to be
 customized to your system. My system layout is:

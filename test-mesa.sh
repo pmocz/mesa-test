@@ -19,7 +19,7 @@ export MY_EMAIL_ADDRESS=pmocz@flatironinstitute.org
 export MY_SLURM_OPTIONS="--partition=gen"
 
 # set how many threads; this will also be sent to SLURM as --ntasks-per-node
-export OMP_NUM_THREADS=16
+export OMP_NUM_THREADS=64
 
 
 # set other relevant MESA options
@@ -27,15 +27,6 @@ export OMP_NUM_THREADS=16
 #export MESA_FPE_CHECKS_ON=1
 export MESA_GIT_LFS_SLEEP=30
 export MESA_FORCE_PGSTAR_FLAG=false
-
-# set paths for OP opacities
-#export MESA_OP_MONO_DATA_PATH=${DATA_DIR}/OP4STARS_1.3/mono
-#export MESA_OP_MONO_DATA_CACHE_FILENAME=${DATA_DIR}/OP4STARS_1.3/mono/op_mono_cache.bin
-#rm -f ${MESA_OP_MONO_DATA_CACHE_FILENAME}
-
-# set non-default cache directory (will be cleaned up on each run)
-#export MESA_CACHES_DIR=/tmp/mesa-cache
-
 
 # if USE_MESA_TEST is set, use mesa_test gem; pick its options via MESA_TEST_OPTIONS
 # otherwise, use built-in each_test_run script
@@ -123,11 +114,3 @@ export ASTERO_JOBID=$(sbatch --parsable \
                              --mail-user=${MY_EMAIL_ADDRESS} \
                              ${MY_SLURM_OPTIONS} \
                              astero.sh)
-
-
-# send the email
-sbatch --output="${MESA_WORK}/cleanup.log" \
-       --dependency=afterany:${STAR_JOBID},afterany:${BINARY_JOBID},afterany:${ASTERO_JOBID} \
-       ${MY_SLURM_OPTIONS} \
-       cleanup.sh
-
