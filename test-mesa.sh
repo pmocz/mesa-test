@@ -34,13 +34,19 @@ export USE_MESA_TEST=t
 export MESA_TEST_OPTIONS="--force"
 
 
-# first argument to script chooses whether to use mesa_test
+# first argument to script is SHA
 case "${USE_MESA_TEST}" in
 
     # test with mesa_test
     t)
 
-	mesa_test install # chore/pmocz/format
+    if [ "$#" -eq 0 ]; then
+        echo "mesa_test on main"
+        mesa_test install
+    else
+        echo "mesa_test on $1"
+        mesa_test install $1   # [SHA]
+    fi
 	mesa_test submit --empty
 	export MESA_WORK=/mnt/home/pmocz/.mesa_test/work
 

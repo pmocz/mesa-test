@@ -8,8 +8,6 @@ SLURM scripts for running the MESA test_suite on rusty at Flatiron.
 
 These scripts submit a set of jobs that run the [[http://mesastar.org][MESA]] test_suite on a cluster.
 It is written for the [[https://slurm.schedmd.com/documentation.html][SLURM]] job scheduler.
-Nifty features include managing the dependencies between the jobs, running the star
-test_suite in parallel, and sending an email with the results.
 
 The scripts assumes you have a [[http://user.astro.wisc.edu/~townsend/static.php?ref=mesasdk][MESA SDK]] installed,
 as well as [[https://github.com/MESAHub/mesa_test][mesa_test]]
@@ -22,7 +20,7 @@ fetch the latest MESA version, so on my cluster, that means it needs
 to run on a login node. It exits after checking out a new copy of
 MESA and spawning the other jobs.
 ```console
-./test-mesa.sh
+./test-mesa.sh [SHA]
 ```
 
 You should edit this script to customize various values for your
