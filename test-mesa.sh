@@ -78,7 +78,7 @@ clean_caches(){
 export -f clean_caches
 
 # run the star test suite
-# this is part is parallelized, so get the number of tests
+# this part is parallelized, so get the number of tests
 cd ${MESA_WORK}/star/test_suite
 export NTESTS=$(./count_tests)
 cd -
@@ -93,7 +93,7 @@ export STAR_JOBID=$(sbatch --parsable \
 
 
 # run the binary test suite
-# this is part is parallelized, so get the number of tests
+# this part is parallelized, so get the number of tests
 cd ${MESA_WORK}/binary/test_suite
 export NTESTS=$(./count_tests)
 cd -
@@ -108,7 +108,7 @@ export BINARY_JOBID=$(sbatch --parsable \
 
 
 # run the astero test suite
-# this is part is parallelized, so get the number of tests
+# this part is parallelized, so get the number of tests
 cd ${MESA_WORK}/astero/test_suite
 export NTESTS=$(./count_tests)
 cd -
